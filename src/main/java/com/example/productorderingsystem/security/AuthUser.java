@@ -1,12 +1,15 @@
-package com.phegondev.phegon.productorderingsystem.security;
+package com.example.productorderingsystem.security;
 
-import com.phegondev.phegon.productorderingsystem.entity.User;
+import com.example.productorderingsystem.entity.User;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.security.core.GrantedAuthority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.userDetails;
 
-import java.util.collection;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
 import java.util.List;
 
 @Data

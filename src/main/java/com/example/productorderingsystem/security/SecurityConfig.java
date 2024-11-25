@@ -1,4 +1,4 @@
-package com.phegondev.phegon.productorderingsystem.security;
+package com.example.productorderingsystem.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

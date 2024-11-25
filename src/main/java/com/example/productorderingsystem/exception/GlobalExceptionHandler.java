@@ -2,55 +2,53 @@ package com.example.productorderingsystem.exception;
 
 import com.example.productorderingsystem.dto.Response;
 import com.mongodb.MongoException;
-import org.springframwork.http.HttpStatus;
+
+import jakarta.validation.ValidationException;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
+@ControllerAdvice
 public class GlobalExceptionHandler {
 
-    public ResponseEntity<Response>handlerAllException(Exception ex, WebRequest request){
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Response> handleAllException(Exception ex, WebRequest request) {
         Response errorResponse = Response.builder()
-        .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-        .message("An unexpected error occurred:"+ex.getMessage())
-        .build();
-        return new ResponseEntity<>(errorResponse,HttpStatus.INTERNAL_SERVER_ERROR);
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .message("An unexpected error occurred: " + ex.getMessage())
+                .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<Response> handleNotFoundException(NotFoundException ex, WebRequest request) {
+        Response errorResponse = Response.builder()
+                .status(HttpStatus.NOT_FOUND.value())
+                .message(ex.getMessage())
+                .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
-    public ResponseEntity<Response>handleNotFounException(NotFoundException ex, WebRequest request){
-        Response errorResponse= Response.buider()
-        .status(HttpStatus.Not_Found.value())
-        .message(ex.getMessage())
-        .build();
-    return new ResponseEntity<>(errorResponse,HttpStatus.NOT_FOUND);
+
+   
+
+    @ExceptionHandler(MongoException.class)
+    public ResponseEntity<Response> handleMongoException(MongoException ex, WebRequest request) {
+        Response errorResponse = Response.builder()
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .message("MongoDB error: " + ex.getMessage())
+                .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    public ResponseEntity<Response>handleInvalidCredentialsException(InvalidCredentialException ex, WebRequest request){
-        Response errorResponse=Response.builder()
-        .status(HttpStatus.BAD_REQUEST.value())
-        .message(ex.getMessage())
-        .build();
+
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<Response> handleValidationException(ValidationException ex, WebRequest request) {
+        Response errorResponse = Response.builder()
+                .status(HttpStatus.BAD_REQUEST.value())
+                .message("Validation failed: " + ex.getMessage())
+                .build();
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-
     }
-    public ResponseEntity<Response>handleMongoException(MongoException ex,  WebRequest request){
-        Response errorResponse=Response.builder()
-        .status(org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR.value())
-        .message("MongoDB error:"+ex.getMessage())
-        .build();
-        return new ResponseEntity<>(errorResponse, org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR);
-
-    }
-
-    public ResponseEntity<Response>handleValidationException(ValidationException ex, WebRequest request){
-        Response errorResponse=Response.builder()
-        .status(HttpStatus.BAD_REQUEST.value())
-        .message("Validation failed:"+ex.getMessage())
-        .build();
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-
-    }
-    
-    
-
 }
